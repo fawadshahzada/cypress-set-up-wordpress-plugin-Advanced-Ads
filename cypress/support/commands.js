@@ -10,6 +10,9 @@
 //
 //
 // -- This is a parent command --
+const sessionCookiePrefix = "SSESS";
+
+
 Cypress.Commands.add('login', (username, password) => { 
 
     cy.get('#user_login')
@@ -27,6 +30,22 @@ Cypress.Commands.add('login', (username, password) => {
     //Click on login button
     cy.get('#wp-submit')
     .click()
+    
+    return (
+        cy
+          .getCookies()
+          // .should("have.length", 1)
+          .then((cookies) => {
+            // cy.log("cookies", JSON.stringify(cookies));
+            const cookieExists = cookies.some((cookie) =>
+              cookie.name.includes(sessionCookiePrefix)
+            );
+    
+            // expect(cookieExists).to.be.true;
+    
+            return cookieExists;
+          })
+      );
 })
 
 

@@ -4,13 +4,13 @@ describe('Visit wordpress Admin site', () => {
     const menuAds = '#toplevel_page_advanced-ads > .wp-submenu > :nth-child(3) > a'
   
     
-    it('Login user and verify if the backend was properly reached', () => {
+    it.only('Login user and verify if the backend was properly reached', () => {
   
         //Visit wordpress admin panel    
-        cy.visit('https://test-setup.com/cypressfawad/')
+        cy.visit(Cypress.env('url'))
 
         //Get username field selector and type username 
-         cy.login('Fawad', 'T((hmktt@@2')
+         cy.login(Cypress.env('username'), Cypress.env('password'))
 
         //Click on wordpress admin logo
         cy.get('#wp-admin-bar-wp-logo')
@@ -22,13 +22,13 @@ describe('Visit wordpress Admin site', () => {
         .should('have.text', 'Dashboard')
 
     })
-    it('open the general settings of the WordPress installation and check if the right destination is reached', () => {
+    it.only('open the general settings of the WordPress installation and check if the right destination is reached', () => {
         
-        //Visit wordpress admin panel    
-        cy.visit('https://test-setup.com/cypressfawad/')
+       //Visit wordpress admin panel    
+       cy.visit(Cypress.env('url'))
 
-        //Get username field selector and type username 
-         cy.login('Fawad', 'T((hmktt@@2')
+       //Get username field selector and type username 
+       // cy.login(Cypress.env('username'), Cypress.env('password'))
 
         //Click on wordpress admin logo
         cy.get('#wp-admin-bar-wp-logo')
@@ -53,10 +53,10 @@ describe('Visit wordpress Admin site', () => {
     it('Navigate Advanced Ads Plugin and Check if there are any ad units in the Advanced Ads ad list', () => {
         
         //Visit wordpress admin panel    
-        cy.visit('https://test-setup.com/cypressfawad/')
+        cy.visit(Cypress.env('url'))
 
         //Get username field selector and type username 
-        cy.login('Fawad', 'T((hmktt@@2')
+         cy.login(Cypress.env('username'), Cypress.env('password'))
 
         //Click on wordpress admin logo
         cy.get('#wp-admin-bar-wp-logo')
@@ -81,10 +81,11 @@ describe('Visit wordpress Admin site', () => {
 
     it('Create new ads', () => {
         
-        //Visit wordpress admin panel    
-        cy.visit('https://test-setup.com/cypressfawad/')
+       //Visit wordpress admin panel    
+       cy.visit(Cypress.env('url'))
 
-        cy.login('Fawad', 'T((hmktt@@2')
+       //Get username field selector and type username 
+        cy.login(Cypress.env('username'), Cypress.env('password'))
 
         //Click on wordpress admin logo
         cy.get('#wp-admin-bar-wp-logo')
@@ -151,9 +152,10 @@ describe('Visit wordpress Admin site', () => {
     it('Delete ad', () => {
         
         //Visit wordpress admin panel    
-        cy.visit('https://test-setup.com/cypressfawad/')
+        cy.visit(Cypress.env('url'))
 
-        cy.login('Fawad', 'T((hmktt@@2')
+        //Get username field selector and type username 
+         cy.login(Cypress.env('username'), Cypress.env('password'))
 
         //Click on wordpress admin logo
         cy.get('#wp-admin-bar-wp-logo')
@@ -186,4 +188,4 @@ describe('Visit wordpress Admin site', () => {
        cy.get('#the-list > tr')
        .should('have.text', 'No Ads found')
     })
-})
+ })
