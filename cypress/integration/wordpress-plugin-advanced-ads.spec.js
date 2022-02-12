@@ -4,7 +4,7 @@ describe('Visit wordpress Admin site', () => {
     const menuAds = '#toplevel_page_advanced-ads > .wp-submenu > :nth-child(3) > a'
   
     
-    it.only('Login user and verify if the backend was properly reached', () => {
+    it('Login user and verify if the backend was properly reached', () => {
   
         //Visit wordpress admin panel    
         cy.visit(Cypress.env('url'))
@@ -22,13 +22,13 @@ describe('Visit wordpress Admin site', () => {
         .should('have.text', 'Dashboard')
 
     })
-    it.only('open the general settings of the WordPress installation and check if the right destination is reached', () => {
+    it('open the general settings of the WordPress installation and check if the right destination is reached', () => {
         
        //Visit wordpress admin panel    
        cy.visit(Cypress.env('url'))
 
        //Get username field selector and type username 
-       // cy.login(Cypress.env('username'), Cypress.env('password'))
+        cy.login(Cypress.env('username'), Cypress.env('password'))
 
         //Click on wordpress admin logo
         cy.get('#wp-admin-bar-wp-logo')
