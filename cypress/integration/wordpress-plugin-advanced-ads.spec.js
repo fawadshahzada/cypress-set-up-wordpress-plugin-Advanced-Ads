@@ -2,16 +2,42 @@ describe('Visit wordpress Admin site', () => {
 
     const menuAdvancedAds = '#toplevel_page_advanced-ads > .wp-has-submenu > .wp-menu-name'
     const menuAds = '#toplevel_page_advanced-ads > .wp-submenu > :nth-child(3) > a'
-    
-    
-    it('Login user and verify if the backend was properly reached', () => {
-  
+    const sessionCookiePrefix = "SSESS";
+
+    const BASE_URL = Cypress.env('url')
+    const Username = Cypress.env('username')
+    const Password = Cypress.env('password')
+
+    beforeEach(()=> {
+
         //Visit wordpress admin panel    
-        cy.visit(Cypress.env('url'))
+        cy.visit(BASE_URL)
 
         //Get username field selector and type username 
-        cy.login(Cypress.env('username'), Cypress.env('password'))
+        cy.AdminLogin(Username, Password)
+        //cy.saveLocalStorage();
+ })
 
+    // beforeEach(() => {
+    //     cy.restoreLocalStorage();
+    //   });
+
+      afterEach(() => {
+        // Check user is logged in
+        cy.getCookies()
+        //.should("have.length", 1)
+        .then((cookies) => {
+        cy.log("cookies", JSON.stringify(cookies));
+        const cookieExists = cookies.some((cookie) =>
+        cookie.name.includes(sessionCookiePrefix)
+        );
+
+        expect(cookieExists).to.be.false;
+        });
+      });
+
+    it('Login user and verify if the backend was properly reached', () => {
+  
         //Click on wordpress admin logo
         cy.get('#wp-admin-bar-wp-logo')
         .should('be.visible')
@@ -21,14 +47,11 @@ describe('Visit wordpress Admin site', () => {
         cy.get('div.wp-menu-image.dashicons-before.dashicons-dashboard ~ .wp-menu-name')
         .should('have.text', 'Dashboard')
 
+
     })
+
     it('open the general settings of the WordPress installation and check if the right destination is reached', () => {
         
-       //Visit wordpress admin panel    
-       cy.visit(Cypress.env('url'))
-
-       //Get username field selector and type username 
-       cy.login(Cypress.env('username'), Cypress.env('password'))
 
         //Click on wordpress admin logo
         cy.get('#wp-admin-bar-wp-logo')
@@ -47,16 +70,10 @@ describe('Visit wordpress Admin site', () => {
         cy.get('h1')
         .should('have.text', 'General Settings')
 
-
     })
 
     it('Navigate Advanced Ads Plugin and Check if there are any ad units in the Advanced Ads ad list', () => {
         
-        //Visit wordpress admin panel    
-        cy.visit(Cypress.env('url'))
-
-        //Get username field selector and type username 
-         cy.login(Cypress.env('username'), Cypress.env('password'))
 
         //Click on wordpress admin logo
         cy.get('#wp-admin-bar-wp-logo')
@@ -80,12 +97,6 @@ describe('Visit wordpress Admin site', () => {
     })
 
     it('Create new ads', () => {
-        
-       //Visit wordpress admin panel    
-       cy.visit(Cypress.env('url'))
-
-       //Get username field selector and type username 
-        cy.login(Cypress.env('username'), Cypress.env('password'))
 
         //Click on wordpress admin logo
         cy.get('#wp-admin-bar-wp-logo')
@@ -151,12 +162,6 @@ describe('Visit wordpress Admin site', () => {
 
     it('Delete ad', () => {
         
-        //Visit wordpress admin panel    
-        cy.visit(Cypress.env('url'))
-
-        //Get username field selector and type username 
-         cy.login(Cypress.env('username'), Cypress.env('password'))
-
         //Click on wordpress admin logo
         cy.get('#wp-admin-bar-wp-logo')
         .should('be.visible')
@@ -172,20 +177,20 @@ describe('Visit wordpress Admin site', () => {
         .should('contain.text','Ads')
         .click()
 
-       //Delete Ads
-       //Select ads
-       cy.get('#cb').should('be.visible').click()
-       //Click on Bulk Action button 
-       cy.get('#bulk-action-selector-bottom')
-       .select('Move to Trash')
+        //Delete Ads
+        //Select ads
+        cy.get('#cb').should('be.visible').click()
+        //Click on Bulk Action button 
+        cy.get('#bulk-action-selector-bottom')
+        .select('Move to Trash')
 
-       // //click on Apply button
-       cy.get('#doaction2')
-       .should('be.visible')
-       .click()
+        // //click on Apply button
+        cy.get('#doaction2')
+        .should('be.visible')
+        .click()
 
-       // Verify text "No Ads found"  if there are no ads on the list
-       cy.get('#the-list > tr')
-       .should('have.text', 'No Ads found')
+        // Verify text "No Ads found"  if there are no ads on the list
+        cy.get('#the-list > tr')
+        .should('have.text', 'No Ads found')
     })
  })

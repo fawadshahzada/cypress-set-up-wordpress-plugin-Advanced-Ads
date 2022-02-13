@@ -9,11 +9,26 @@
 // ***********************************************
 //
 //
+
 // -- This is a parent command --
 const sessionCookiePrefix = "SSESS";
+import "cypress-localstorage-commands";
 
+//let LOCAL_STORAGE_MEMORY = {};
 
-Cypress.Commands.add('login', (username, password) => { 
+// Cypress.Commands.add("saveLocalStorage", () => {
+//   Object.values(localStorage).forEach(key => {
+//     LOCAL_STORAGE_MEMORY[key] = localStorage[key];
+//   });
+// });
+
+// Cypress.Commands.add("restoreLocalStorage", () => {
+//   Object.values(LOCAL_STORAGE_MEMORY).forEach(key => {
+//     localStorage.setItem(key, LOCAL_STORAGE_MEMORY[key]);
+//   });
+// });
+
+Cypress.Commands.add('AdminLogin', (username, password) => { 
 
     cy.get('#user_login')
     .clear()
@@ -30,32 +45,28 @@ Cypress.Commands.add('login', (username, password) => {
     //Click on login button
     cy.get('#wp-submit')
     .click()
+
+  /**
+   * Make sure that the session cookie is set
+   */
+   return (
+    cy
+      .getCookies()
+      // .should("have.length", 1)
+      .then((cookies) => {
+        cy.log("cookies", JSON.stringify(cookies));
+        const cookieExists = cookies.some((cookie) =>
+          cookie.name.includes(sessionCookiePrefix)
+          
+        );
+        cy.setLocalStorage("cookieExists", cookieExists);
+
+        // expect(cookieExists).to.be.true;
+
+        return cookieExists;
+      })
+  );
     
-    return (
-        cy
-          .getCookies()
-          // .should("have.length", 1)
-          .then((cookies) => {
-            // cy.log("cookies", JSON.stringify(cookies));
-            const cookieExists = cookies.some((cookie) =>
-              cookie.name.includes(sessionCookiePrefix)
-            );
-    
-            // expect(cookieExists).to.be.true;
-    
-            return cookieExists;
-          })
-      );
 })
 
 
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })

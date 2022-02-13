@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/fawadshahzada/cypress-set-up-wordpress-plugin-Advanced-Ads#readme",
   "devDependencies": {
-    "cypress": "^9.4.1"
+    "cypress": "^9.4.1",
+    "cypress-localstorage-commands": "^1.6.1"
   }
 }
