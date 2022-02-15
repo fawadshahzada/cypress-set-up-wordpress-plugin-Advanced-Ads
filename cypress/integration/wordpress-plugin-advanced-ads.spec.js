@@ -8,33 +8,15 @@ describe('Visit wordpress Admin site', () => {
     const Username = Cypress.env('username')
     const Password = Cypress.env('password')
 
-    beforeEach(()=> {
+    before(()=> {
 
         //Visit wordpress admin panel    
         cy.visit(BASE_URL)
-
         //Get username field selector and type username 
         cy.AdminLogin(Username, Password)
-        //cy.saveLocalStorage();
+       
  })
 
-    // beforeEach(() => {
-    //     cy.restoreLocalStorage();
-    //   });
-
-      afterEach(() => {
-        // Check user is logged in
-        cy.getCookies()
-        //.should("have.length", 1)
-        .then((cookies) => {
-        cy.log("cookies", JSON.stringify(cookies));
-        const cookieExists = cookies.some((cookie) =>
-        cookie.name.includes(sessionCookiePrefix)
-        );
-
-        expect(cookieExists).to.be.false;
-        });
-      });
 
     it('Login user and verify if the backend was properly reached', () => {
   
@@ -46,7 +28,6 @@ describe('Visit wordpress Admin site', () => {
         //Verify dashboard menu item text
         cy.get('div.wp-menu-image.dashicons-before.dashicons-dashboard ~ .wp-menu-name')
         .should('have.text', 'Dashboard')
-
 
     })
 

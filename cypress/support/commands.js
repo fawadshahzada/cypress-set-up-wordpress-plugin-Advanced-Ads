@@ -14,20 +14,6 @@
 const sessionCookiePrefix = "SSESS";
 import "cypress-localstorage-commands";
 
-//let LOCAL_STORAGE_MEMORY = {};
-
-// Cypress.Commands.add("saveLocalStorage", () => {
-//   Object.values(localStorage).forEach(key => {
-//     LOCAL_STORAGE_MEMORY[key] = localStorage[key];
-//   });
-// });
-
-// Cypress.Commands.add("restoreLocalStorage", () => {
-//   Object.values(LOCAL_STORAGE_MEMORY).forEach(key => {
-//     localStorage.setItem(key, LOCAL_STORAGE_MEMORY[key]);
-//   });
-// });
-
 Cypress.Commands.add('AdminLogin', (username, password) => { 
 
     cy.get('#user_login')
@@ -50,20 +36,11 @@ Cypress.Commands.add('AdminLogin', (username, password) => {
    * Make sure that the session cookie is set
    */
    return (
-    cy
-      .getCookies()
+    cy.getCookies()
       // .should("have.length", 1)
       .then((cookies) => {
-        cy.log("cookies", JSON.stringify(cookies));
-        const cookieExists = cookies.some((cookie) =>
-          cookie.name.includes(sessionCookiePrefix)
-          
-        );
-        cy.setLocalStorage("cookieExists", cookieExists);
-
-        // expect(cookieExists).to.be.true;
-
-        return cookieExists;
+        document.cookie = JSON.stringify(cookies)
+  
       })
   );
     
